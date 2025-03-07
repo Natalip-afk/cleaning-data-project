@@ -22,7 +22,7 @@ The script run_analysis.R performs the following tasks:
 4. Saves a tidy dataset as tidy_data.txt.
 
 
-#Project questions once the data is loaded
+# Project questions once the data is loaded
 
 # Project Data acquisition and cleaning
 
