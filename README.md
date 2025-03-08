@@ -1,4 +1,4 @@
-# title: "Cleaning Data Project"
+# **title: "Cleaning Data Project"**
 # author: "Natali Pérez""
 # date: "`r Sys.Date()`"
 # output: html_document
