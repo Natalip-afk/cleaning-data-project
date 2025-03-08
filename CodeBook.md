@@ -1,54 +1,53 @@
-# Contenido del archivo CodeBook.md
-codebook_content <- "
 # CodeBook.md
 
-## 1. Introducción
-Este archivo describe las variables, los datos y las transformaciones realizadas para el proyecto. El objetivo principal es analizar los datos del conjunto **UCI HAR Dataset** sobre actividades humanas registradas con sensores, y generar un conjunto de datos ordenado.
+## 1. Introduction
+This file describes the variables, data, and transformations performed for the project. The main objective is to analyze the data from the **UCI HAR Dataset** on human activities recorded with sensors and generate a tidy dataset.
 
-## 2. Descripción de los Datos
-- **Fuente de los datos**: [UCI HAR Dataset](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
-- **Estructura de los datos**:
-  - Datos originales divididos en conjuntos de entrenamiento (`train`) y prueba (`test`).
-  - Incluye mediciones de acelerómetros y giroscopios en unidades **m/s²** y **rad/s**.
-- **Número de observaciones**: La unión de los conjuntos de entrenamiento y prueba.
-- **Licencia**: Los datos son de uso público con reconocimiento de la fuente original.
+## 2. Data Description
+- **Data source**: [UCI HAR Dataset](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
+- **Data structure**:
+  - Original data divided into training (`train`) and test (`test`) sets.
+  - Includes measurements from accelerometers and gyroscopes in units of **m/s²** and **rad/s**.
+- **Number of observations**: The combination of training and test sets.
+- **License**: The data is publicly available with acknowledgment of the original source.
 
 ## 3. Variables
-Las variables representan señales de sensores procesadas para calcular características estadísticas como medias y desviaciones estándar.
+The variables represent sensor signals processed to calculate statistical features such as means and standard deviations.
 
-Ejemplo de variables seleccionadas:
-- **TimeBodyAccelerometerMeanX**: Media de aceleración en el eje X del cuerpo en el dominio del tiempo.
-- **TimeBodyAccelerometerStdY**: Desviación estándar de aceleración en el eje Y del cuerpo en el dominio del tiempo.
-- **FrequencyBodyGyroscopeMeanZ**: Media de la velocidad angular en el eje Z del cuerpo en el dominio de la frecuencia.
+Example of selected variables:
+- **TimeBodyAccelerometerMeanX**: Mean of body acceleration on the X-axis in the time domain.
+- **TimeBodyAccelerometerStdY**: Standard deviation of body acceleration on the Y-axis in the time domain.
+- **FrequencyBodyGyroscopeMeanZ**: Mean of angular velocity on the Z-axis of the body in the frequency domain.
 
-Cada variable seleccionada contiene mediciones relacionadas con:
-- **Dominios**: Tiempo (`Time`) o frecuencia (`Frequency`).
-- **Sensores**: Acelerómetro (`Accelerometer`) o giroscopio (`Gyroscope`).
-- **Características**: Media (`Mean`) o desviación estándar (`Std`).
+Each selected variable contains measurements related to:
+- **Domains**: Time (`Time`) or frequency (`Frequency`).
+- **Sensors**: Accelerometer (`Accelerometer`) or gyroscope (`Gyroscope`).
+- **Features**: Mean (`Mean`) or standard deviation (`Std`).
 
-### Variables adicionales:
-- **ActivityName**: Nombre descriptivo de la actividad (por ejemplo, caminar, estar de pie).
-- **subject**: Identificador del participante del estudio.
+### Additional variables:
+- **ActivityName**: Descriptive name of the activity (e.g., walking, standing).
+- **subject**: Identifier of the study participant.
 
-## 4. Transformaciones y Limpieza
-### **Paso 1**: Unión de datos
-- **Cambio**: Se unieron los conjuntos de datos de entrenamiento y prueba mediante `rbind`.
-- **Motivo**: Crear un único conjunto de datos para análisis.
+## 4. Transformations and Cleaning
+### **Step 1**: Data merging
+- **Change**: Training and test datasets were merged using `rbind`.
+- **Reason**: To create a single dataset for analysis.
 
-### **Paso 2**: Selección de variables
-- **Cambio**: Se filtraron las columnas relacionadas con medias y desviaciones estándar.
-- **Motivo**: Simplificar el análisis enfocándose en características relevantes.
-- **Método**: Uso de `grep` y selección con `select()`.
+### **Step 2**: Variable selection
+- **Change**: Columns related to means and standard deviations were filtered.
+- **Reason**: To simplify the analysis by focusing on relevant features.
+- **Method**: Use of `grep` and selection with `select()`.
 
-### **Paso 3**: Etiquetas descriptivas
-- **Cambio**: Nombres de columnas modificados para ser más legibles (por ejemplo, `tBodyAcc-mean()-X` a `TimeBodyAccelerometerMeanX`).
-- **Motivo**: Hacer que los nombres sean interpretables.
-- **Método**: Uso de expresiones regulares con `gsub`.
+### **Step 3**: Descriptive labels
+- **Change**: Column names were modified to be more readable (e.g., `tBodyAcc-mean()-X` to `TimeBodyAccelerometerMeanX`).
+- **Reason**: To make the names interpretable.
+- **Method**: Use of regular expressions with `gsub`.
 
-### **Paso 4**: Nombres de actividades
-- **Cambio**: Se reemplazaron los IDs de las actividades por nombres descriptivos como "WALKING".
-- **Motivo**: Facilitar la interpretación de los datos.
-- **Método**: Unión del archivo `activity_labels.txt` con los datos.
+### **Step 4**: Activity names
+- **Change**: Activity IDs were replaced with descriptive names such as "WALKING".
+- **Reason**: To facilitate data interpretation.
+- **Method**: Joining the `activity_labels.txt` file with the data.
 
-### **Paso 5**: Conjunto de datos ordenado
-- **Cambio**: Cálculo de la media
+### **Step 5**: Tidy dataset
+- **Change**: Calculation of the mean for each variable, grouped by activity and subject.
+
