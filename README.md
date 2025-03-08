@@ -30,9 +30,9 @@ getwd()
 
 # Question 1: Merge the training and test datasets to create a single dataset.
 ### Load training data
-train_data <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/train/X_train.txt")
+train_data <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/train/X_train.txt")
 ### Load test data
-test_data <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/test/X_test.txt")
+test_data <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/test/X_test.txt")
 ### Merge the datasets
 merged_data <- rbind(train_data, test_data)
 ### Verify that the datasets were merged correctly
@@ -40,7 +40,7 @@ dim(merged_data)  # Check the total number of rows and columns in the new datase
 
 # Question 2: Extract only the measurements of mean and standard deviation for each measurement.
 ### Load the features.txt file
-features <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/features.txt", stringsAsFactors = FALSE)
+features <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/features.txt", stringsAsFactors = FALSE)
 ### Identify the indices of columns with "mean()" or "std()"
 mean_std_indices <- grep("mean\\(\\)|std\\(\\)", features$V2)
 ### Optional: Verify the names of the selected columns
@@ -56,10 +56,10 @@ filtered_data <- merged_data %>%
 
 # Question 3: Use descriptive activity names to name the activities in the dataset.
 ### Load activity_labels.txt
-activity_labels <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/activity_labels.txt", col.names = c("ActivityID", "ActivityName"))
+activity_labels <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/activity_labels.txt", col.names = c("ActivityID", "ActivityName"))
 ### Load activity data
-train_activity <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/train/y_train.txt", col.names = "ActivityID")
-test_activity <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/test/y_test.txt", col.names = "ActivityID")
+train_activity <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/train/y_train.txt", col.names = "ActivityID")
+test_activity <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/test/y_test.txt", col.names = "ActivityID")
 ### Merge training and test activity data
 activity_data <- rbind(train_activity, test_activity)
 ### Add activity codes to merged_data
@@ -84,8 +84,8 @@ colnames(merged_data)
 
 # Question 5: Create a second independent tidy dataset with the average of each variable for each activity and each subject.
 ### Load subject data
-subject_train <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/train/subject_train.txt", col.names = "subject")
-subject_test <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/test/subject_test.txt", col.names = "subject")
+subject_train <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/train/subject_train.txt", col.names = "subject")
+subject_test <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/test/subject_test.txt", col.names = "subject")
 ### Merge subject data
 subject_data <- rbind(subject_train, subject_test)
 ### Add subjects to merged_data
