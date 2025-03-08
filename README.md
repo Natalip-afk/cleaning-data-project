@@ -4,11 +4,11 @@ date: "`r Sys.Date()`"
 output: html_document
 
 
-## Purpose
+# Purpose
 Purpose
 This project demonstrates the ability to clean, transform, and analyze a messy dataset, producing a tidy dataset ready for analysis.
 
-## Scripts
+# Scripts
 The script run_analysis.R performs the following tasks:
 
 1. Loads and combines training and test data.
