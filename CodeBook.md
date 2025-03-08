@@ -5,6 +5,8 @@ This file describes the variables, data, and transformations performed for the p
 
 ## 2. Data Description
 - **Data source**: [UCI HAR Dataset](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
+- ** Archivo zip: https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+- 
 - **Data structure**:
   - Original data divided into training (`train`) and test (`test`) sets.
   - Includes measurements from accelerometers and gyroscopes in units of **m/s²** and **rad/s**.
