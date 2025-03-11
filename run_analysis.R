@@ -12,10 +12,10 @@ getwd()
 # Pregunta 1.Fusiona los conjuntos de entrenamiento y de prueba para crear un único conjunto de datos. 
 
 # Cargar datos de entrenamiento
-train_data <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/train/X_train.txt")
+train_data <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/train/X_train.txt")
 
 # Cargar datos de prueba
-test_data <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/test/X_test.txt")
+test_data <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/test/X_test.txt")
 
 # para fusionarlos datos
 merged_data <- rbind(train_data, test_data)
@@ -26,7 +26,7 @@ dim(merged_data)  # Verá el número total de filas y columnas del nuevo conjunt
 # Pregunta 2. Extrae sólo las mediciones de la media y la desviación estándar de cada medición.
 
 # Cargar el archivo features.txt
-features <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/features.txt", stringsAsFactors = FALSE)
+features <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/features.txt", stringsAsFactors = FALSE)
 
 # Identificar índices de las columnas con "mean()" o "std()"
 mean_std_indices <- grep("mean\\(\\)|std\\(\\)", features$V2)
@@ -48,11 +48,11 @@ filtered_data <- merged_data %>%
 # Pregunta 3. Utiliza nombres de actividades descriptivos para nombrar las actividades del conjunto de datos
 
 # Cargar activity_labels.txt
-activity_labels <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/activity_labels.txt", col.names = c("ActivityID", "ActivityName"))
+activity_labels <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/activity_labels.txt", col.names = c("ActivityID", "ActivityName"))
 
 # Cargar datos de actividad
-train_activity <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/train/y_train.txt", col.names = "ActivityID")
-test_activity <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/UCI HAR Dataset/test/y_test.txt", col.names = "ActivityID")
+train_activity <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/train/y_train.txt", col.names = "ActivityID")
+test_activity <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/test/y_test.txt", col.names = "ActivityID")
 
 # Fusionar datos de actividad de entrenamiento y prueba
 activity_data <- rbind(train_activity, test_activity)
