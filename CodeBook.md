@@ -1,53 +1,57 @@
-# CodeBook.md
+# Data Cleaning Project
 
 ## 1. Introduction
-This file describes the variables, data, and transformations performed for the project. The main objective is to analyze the data from the **UCI HAR Dataset** on human activities recorded with sensors and generate a tidy dataset.
+This document describes the variables, data, and transformation steps used in the analysis of the dataset for the project. The main objective is to process and clean the **UCI HAR Dataset** on human activities recorded by sensors, creating a tidy dataset.
 
 ## 2. Data Description
-- **Data source**: https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
+- **Data source**: [UCI HAR Dataset](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
 - **Data structure**:
-  - Original data divided into training (`train`) and test (`test`) sets.
-  - Includes measurements from accelerometers and gyroscopes in units of **m/s²** and **rad/s**.
-- **Number of observations**: The combination of training and test sets.
-- **License**: The data is publicly available with acknowledgment of the original source.
+  - Split into training and test datasets.
+  - Measurements were obtained from accelerometers and gyroscopes in units of **m/s²** and **rad/s**.
+- **Total number of observations**: A result of combining the training and test datasets.
+- **License**: Data is publicly available with acknowledgment of the original source.
 
-## 3. Variables
-The variables represent sensor signals processed to calculate statistical features such as means and standard deviations.
+## 3. Variables in the Final Dataset
 
-Example of selected variables:
-- **TimeBodyAccelerometerMeanX**: Mean of body acceleration on the X-axis in the time domain.
-- **TimeBodyAccelerometerStdY**: Standard deviation of body acceleration on the Y-axis in the time domain.
-- **FrequencyBodyGyroscopeMeanZ**: Mean of angular velocity on the Z-axis of the body in the frequency domain.
+### Identifiers
+- **subject**: Identifier for the subject who performed the activity (range: 1 to 30).
+- **ActivityName**: Descriptive name of the activity performed.
 
-Each selected variable contains measurements related to:
-- **Domains**: Time (`Time`) or frequency (`Frequency`).
-- **Sensors**: Accelerometer (`Accelerometer`) or gyroscope (`Gyroscope`).
-- **Features**: Mean (`Mean`) or standard deviation (`Std`).
+### Measurements
+The variables represent the mean values of specific features for each subject and activity combination. Examples of the final variables include:
+- **mean_TimeBodyAccelerometerMeanX**: Mean of body acceleration in the X direction in the time domain.
+- **mean_TimeBodyAccelerometerStdY**: Standard deviation of body acceleration in the Y direction in the time domain.
+- **mean_FrequencyBodyGyroscopeMagnitudeMean**: Mean of gyroscope magnitude in the frequency domain.
 
-### Additional variables:
-- **ActivityName**: Descriptive name of the activity (e.g., walking, standing).
-- **subject**: Identifier of the study participant.
+### Activity Labels
+The activities include:
+1. **WALKING**
+2. **WALKING_UPSTAIRS**
+3. **WALKING_DOWNSTAIRS**
+4. **SITTING**
+5. **STANDING**
+6. **LAYING**
 
-## 4. Transformations and Cleaning
-### **Step 1**: Data merging
-- **Change**: Training and test datasets were merged using `rbind`.
-- **Reason**: To create a single dataset for analysis.
+## 4. Data Transformation and Cleaning Steps
+The following steps were implemented to clean and prepare the dataset:
+1. **Merging Datasets**:
+   - The training (`X_train.txt`) and test (`X_test.txt`) datasets were combined into a single dataset.
+2. **Selecting Specific Measurements**:
+   - Columns corresponding to means (`mean()`) and standard deviations (`std()`) were selected.
+3. **Adding Descriptive Activity Labels**:
+   - Activity IDs were matched with descriptive names using the `activity_labels.txt` file.
+4. **Renaming Columns**:
+   - Parentheses and dashes were removed for clarity, and descriptive terms were used:
+     - `t` → `Time`, `f` → `Frequency`
+     - `Acc` → `Accelerometer`, `Gyro` → `Gyroscope`, `Mag` → `Magnitude`
+5. **Creating a Tidy Dataset**:
+   - A tidy dataset was created with the mean of each variable grouped by subject and activity.
 
-### **Step 2**: Variable selection
-- **Change**: Columns related to means and standard deviations were filtered.
-- **Reason**: To simplify the analysis by focusing on relevant features.
-- **Method**: Use of `grep` and selection with `select()`.
-
-### **Step 3**: Descriptive labels
-- **Change**: Column names were modified to be more readable (e.g., `tBodyAcc-mean()-X` to `TimeBodyAccelerometerMeanX`).
-- **Reason**: To make the names interpretable.
-- **Method**: Use of regular expressions with `gsub`.
-
-### **Step 4**: Activity names
-- **Change**: Activity IDs were replaced with descriptive names such as "WALKING".
-- **Reason**: To facilitate data interpretation.
-- **Method**: Joining the `activity_labels.txt` file with the data.
-
-### **Step 5**: Tidy dataset
-- **Change**: Calculation of the mean for each variable, grouped by activity and subject.
+## 5. Final Result
+The final dataset contains:
+- **Number of rows**: 180 (30 subjects × 6 activities).
+- **Number of columns**: Descriptive variables and calculated averages.
+- **Exported format**: `tidy_data.txt`, using the following code:
+```R
+write.table(tidy_data, file = "tidy_data.txt", sep = "\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 
