@@ -16,87 +16,62 @@ The script run_analysis.R performs the following tasks:
 3. Calculates the average of each variable for each activity and subject.
 4. Saves a tidy dataset as tidy_data.txt.
 
+# Data Cleaning Project
+library(dplyr)  # Load necessary library
 
-### Project questions once the data is loaded
-### Project Data acquisition and cleaning
-### Load necessary library
-library(dplyr)
-
-### Set working directory
+# Set working directory
 setwd("C:/Users/USUARIO/Documents/UCI HAR Dataset")
 
-### Check the current working directory
-getwd()
+# Merge training and testing datasets
+merged_data <- bind_rows(
+  read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/train/X_train.txt"),
+  read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/test/X_test.txt")
+)
 
-# Question 1: Merge the training and test datasets to create a single dataset.
-### Load training data
-train_data <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/train/X_train.txt")
-### Load test data
-test_data <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/test/X_test.txt")
-### Merge the datasets
-merged_data <- rbind(train_data, test_data)
-### Verify that the datasets were merged correctly
-dim(merged_data)  # Check the total number of rows and columns in the new dataset
-
-# Question 2: Extract only the measurements of mean and standard deviation for each measurement.
-### Load the features.txt file
+# Load features and select mean and standard deviation measurements
 features <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/features.txt", stringsAsFactors = FALSE)
-### Identify the indices of columns with "mean()" or "std()"
 mean_std_indices <- grep("mean\\(\\)|std\\(\\)", features$V2)
-### Optional: Verify the names of the selected columns
-mean_std_columns <- features$V2[mean_std_indices]
-print(mean_std_columns)  # List of selected columns
-### Filter "mean" and "std" columns using the identified indices
-filtered_data <- merged_data[, mean_std_indices]
-### Assign column names to the merged dataset
-colnames(merged_data) <- features$V2
-### Select columns with "mean" or "std" directly
 filtered_data <- merged_data %>%
-        select(matches("mean\\(\\)|std\\(\\)"))
+  select(matches("mean\\(\\)|std\\(\\)"))
 
-# Question 3: Use descriptive activity names to name the activities in the dataset.
-### Load activity_labels.txt
-activity_labels <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/activity_labels.txt", col.names = c("ActivityID", "ActivityName"))
-### Load activity data
-train_activity <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/train/y_train.txt", col.names = "ActivityID")
-test_activity <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/test/y_test.txt", col.names = "ActivityID")
-### Merge training and test activity data
-activity_data <- rbind(train_activity, test_activity)
-### Add activity codes to merged_data
-merged_data <- cbind(activity_data, merged_data)
-### Merge activity_labels with the data
-merged_data <- merge(merged_data, activity_labels, by = "ActivityID", all.x = TRUE)
-### Validate column names in merged_data and activity_labels
-colnames(merged_data)
-colnames(activity_labels)
+# Load and combine activity data
+activity_data <- bind_rows(
+  read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/train/y_train.txt", col.names = "ActivityID"),
+  read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/test/y_test.txt", col.names = "ActivityID")
+)
 
-# Question 4: Appropriately label the dataset with descriptive variable names.
-### Simplify column names
-colnames(merged_data) <- gsub("[()\\-]", "", colnames(merged_data))
-colnames(merged_data) <- gsub("^t", "Time", colnames(merged_data))
-colnames(merged_data) <- gsub("^f", "Frequency", colnames(merged_data))
-colnames(merged_data) <- gsub("Acc", "Accelerometer", colnames(merged_data))
-colnames(merged_data) <- gsub("Gyro", "Gyroscope", colnames(merged_data))
-colnames(merged_data) <- gsub("Mag", "Magnitude", colnames(merged_data))
-colnames(merged_data) <- gsub("BodyBody", "Body", colnames(merged_data))
-### Verify new column names
-colnames(merged_data)
+# Merge activity labels
+activity_labels <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/activity_labels.txt",
+                              col.names = c("ActivityID", "ActivityName"))
+merged_data <- cbind(activity_data, merged_data) %>%
+  left_join(activity_labels, by = "ActivityID")
 
-# Question 5: Create a second independent tidy dataset with the average of each variable for each activity and each subject.
-### Load subject data
+# Rename columns with descriptive variable names
+original_colnames <- colnames(merged_data)
+descriptive_colnames <- original_colnames %>%
+  gsub("[()\\-]", "", .) %>%
+  gsub("^t", "Time", .) %>%
+  gsub("^f", "Frequency", .) %>%
+  gsub("Acc", "Accelerometer", .) %>%
+  gsub("Gyro", "Gyroscope", .) %>%
+  gsub("Mag", "Magnitude", .) %>%
+  gsub("BodyBody", "Body", .)
+colnames(merged_data) <- descriptive_colnames
+
+# Load and combine subject data
 subject_train <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/train/subject_train.txt", col.names = "subject")
 subject_test <- read.table("C:/Users/USUARIO/Documents/UCI HAR Dataset/test/subject_test.txt", col.names = "subject")
-### Merge subject data
 subject_data <- rbind(subject_train, subject_test)
-### Add subjects to merged_data
+
+# Add subject data to merged_data
 merged_data <- cbind(subject_data, merged_data)
-### Group data by "subject" and "activity"
+
+# Create tidy dataset with averages for each activity and subject
 tidy_data <- merged_data %>%
-        group_by(subject, ActivityName) %>%
-        summarise(across(where(is.numeric), \(x) mean(x, na.rm = TRUE)), .groups = "drop")
+  group_by(subject, ActivityName) %>%
+  summarise(across(where(is.numeric), mean, .names = "mean_{col}"), .groups = "drop")
 
-### Validate the final tidy dataset
-head(tidy_data)
+# Export the tidy dataset to a text file
+write.table(tidy_data, file = "C:/Users/USUARIO/Desktop/tidy_data.txt",
+            sep = "\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 
-### Save the tidy dataset
-write.table(tidy_data, "tidy_data.txt", row.names = FALSE)
