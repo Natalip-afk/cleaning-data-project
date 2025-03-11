@@ -1,6 +1,6 @@
 # Proyecto
 
-# cargar 
+# Cargar 
 library(dplyr)
 
 # Crear el directorio de trabajo
